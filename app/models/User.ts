@@ -1,12 +1,12 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 
-interface IUser extends Document {
+export interface IUser extends Document {
     name: string,
     email: string,
-    deleted: boolean,
-    createdAt: Date,
-    updatedAt: Date
+    deleted?: boolean,
+    createdAt?: Date,
+    updatedAt?: Date
 }
 
 
