@@ -1,47 +1,106 @@
-# 🚀 Next.js REST API (Backend Architecture *Practice*)
+#  User Service API
 
-This project is a structured backend API built using Next.js App Router.
-It focuses on **clean architecture, separation of concerns, and real backend practices** instead of simple route-based coding.
+**Next.js + TypeScript + MongoDB (Mongoose)**
 
----
-
-## 📌 Features
-
-* REST API with proper HTTP methods
-* Clean architecture (Controller → Service → DB)
-* Input validation
-* Structured API responses
-* Soft delete (no permanent data loss)
-* UUID-based user IDs
-* File-based database (for learning purpose)
+A production-style backend service built using **Next.js App Router**, **MongoDB**, and **Mongoose**, focusing on **clean architecture**, **scalability**, and **backend best practices**.
 
 ---
 
-## 🧠 Tech Stack
+##  Overview
 
-* Next.js (App Router)
+This project is not just a CRUD API. It demonstrates how to build a **structured backend service** with:
+
+* Safe **database connection handling**
+* Clean **service-layer architecture**
+* Efficient **pagination & filtering**
+* **Indexing** for performance
+* Basic **rate limiting**
+* Standardized **error handling**
+* Full **TypeScript support**
+
+
+---
+
+##  Tech Stack
+
+* Next.js App Router
+* MongoDB
+* Mongoose
 * TypeScript
-* Node.js (fs module)
-* File-based JSON storage
 
 ---
 
+##  Environment Setup
 
-## ⚙️ API Endpoints
+### 1. Create `.env.local`
 
-### 📥 Get All Users
+```env
+MONGODB_URI=mongodb://127.0.0.1:27017/user-service
+```
+
+ For MongoDB Atlas:
+
+```env
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/user-service
+```
+
+---
+
+##  Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Server will run at:
 
 ```
+http://localhost:3000
+```
+
+---
+
+##  API Endpoints
+
+
+
+### GET `/api/users` → Get all users
+
+```http
 GET /api/users
 ```
 
-* Returns all non-deleted users
+---
+
+### Pagination
+
+```http
+GET /api/users?page=1
+GET /api/users?limit=2
+```
 
 ---
 
-### ➕ Create User
+###  Filtering
 
+```http
+GET /api/users?name=smith
 ```
+
+---
+
+###  Combined Query (Recommended)
+
+```http
+GET /api/users?page=1&limit=2&name=smith
+```
+
+---
+
+###  POST `/api/users` → Create user
+
+```http
 POST /api/users
 ```
 
@@ -49,53 +108,70 @@ POST /api/users
 
 ```json
 {
-  "name": "John Doe",
-  "email": "john@example.com"
+  "name": "dikshith",
+  "email": "dikshith@example.com"
 }
 ```
 
-#### Responses:
+---
 
-* `201` → Created
-* `400` → Validation error
-* `409` → Duplicate email
+###  DELETE `/api/users/[id]` → Delete user
+
+```http
+DELETE /api/users/{id}
+```
 
 ---
 
-### ✏️ Update User
+##  Features Explained
 
-```
-PATCH /api/users/:id
-```
 
-#### Body:
 
-```json
-{
-  "name": "Updated Name"
-}
-```
+###  Database Connection (Singleton)
 
-#### Responses:
-
-* `200` → Success
-* `404` → User not found
+* Prevents multiple DB connections in Next.js dev mode
+* Uses global caching
+* Ensures efficient resource usage
 
 ---
 
-### ❌ Delete User (Soft Delete)
+###  Pagination
 
-```
-DELETE /api/users/:id
-```
-
-* Marks user as deleted instead of removing
+* Uses `skip` and `limit`
+* Avoids loading large datasets
+* Essential for scalability
 
 ---
 
-## 📦 Response Format
+###  Indexing
 
-### ✅ Success
+* Email field is indexed
+* Improves query performance significantly
+
+---
+
+###  Filtering
+
+* Supports filtering by `name`
+
+---
+
+###  Rate Limiting
+
+* Limits number of requests per IP
+* Prevents API abuse
+*  In-memory (not suitable for distributed systems)
+
+---
+
+###  Service Layer
+
+* Separates business logic from routes
+* Improves maintainability and scalability
+
+---
+
+###  Standard Response Format
 
 ```json
 {
@@ -104,44 +180,22 @@ DELETE /api/users/:id
 }
 ```
 
-### ❌ Error
+Error format:
 
 ```json
 {
   "success": false,
-  "error": "Error message"
+  "message": "Error message"
 }
 ```
 
----
+##  Key Learnings
 
-## 🧠 Key Concepts Learned
-
-* Separation of concerns (Controller vs Service vs DB)
-* REST API design principles
-* Proper HTTP status codes
-* Validation and error handling
-* Soft delete vs hard delete
+* Why DB connection reuse is critical in Next.js
+* How indexing improves performance
+* Why pagination is necessary
+* Clean backend architecture patterns
+* Proper API design & error handling
 
 ---
 
-## ⚠️ Limitations (Important)
-
-This project is **NOT production-ready**.
-
-
-
-## 🧪 How to Run
-
-```bash
-npm install
-npm run dev
-```
-
-Server runs on:
-
-```
-http://localhost:3000
-```
-
-# This is a practice project
