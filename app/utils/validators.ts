@@ -1,8 +1,8 @@
-import { IUser } from "@/models/User";
+
 
 const emailR = /^\S+@\S+\.\S+$/;
 
-export function validateData(data: IUser): string | null {
+export function validateData(data: { email: string, name?: string }): string | null {
     if (!data.name) {
         return "Name is required";
     }

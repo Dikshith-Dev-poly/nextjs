@@ -4,10 +4,20 @@ export async function createUser(data: IUser) {
     return await User.create(data);
 }
 
+export async function deleteUser(data: { id: string }) {
+    const user = await User.findById(data.id);
+    if (!user || user.deleted) {
+        throw new Error("User not found");
+    }
+    user.deleted = true;
+    await user.save();
+    return user;
+}
+
 interface guQueryI {
     page: number
     limit: number
-    name: string
+    name: string | undefined
 }
 
 export async function getUsers({ page = 1, limit = 10, name }: guQueryI) {
